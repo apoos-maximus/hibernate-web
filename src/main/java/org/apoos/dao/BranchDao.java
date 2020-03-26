@@ -2,14 +2,13 @@ package org.apoos.dao;
 
 import org.apoos.hibernate.HibernateUtil;
 import org.apoos.model.Account;
+import org.apoos.model.Branch;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.sql.*;
-import java.util.LinkedList;
 import java.util.List;
 
-public class AccountDao {
+public class BranchDao {
     private Session currentSession;
     private Transaction currentTransaction;
 
@@ -49,34 +48,32 @@ public class AccountDao {
         this.currentTransaction = currentTransaction;
     }
 
-    public void persist(Account account) {
-        getCurrentSession().save(account.getAccountBranch());
-        getCurrentSession().save(account);
+    public void persist(Branch branch) {
+        getCurrentSession().save(branch);
     }
 
-    public void update(Account account) {
-        getCurrentSession().saveOrUpdate(account.getAccountBranch());
-        getCurrentSession().update(account);
+    public void update(Branch branch) {
+        getCurrentSession().update(branch);
     }
 
-    public Account findById(Integer id) {
-        Account account = (Account) getCurrentSession().get(Account.class, id);
-        return account;
+    public Branch findById(Integer id) {
+        Branch branch = (Branch) getCurrentSession().get(Branch.class, id);
+        return branch;
     }
 
-    public void delete(Account account) {
-        getCurrentSession().delete(account);
+    public void delete(Branch branch) {
+        getCurrentSession().delete(branch);
     }
 
-    public List<Account> findAll() {
-        List<Account> accounts = (List<Account>) getCurrentSession().createQuery("from account_table").list();
-        return accounts;
+    public List<Branch> findAll() {
+        List<Branch> branches = (List<Branch>) getCurrentSession().createQuery("from Branch").list();
+        return branches;
     }
 
     public void deleteAll() {
-        List<Account> accounts = findAll();
-        for (Account account : accounts) {
-            delete(account);
+        List<Branch> branches = findAll();
+        for (Branch branch : branches) {
+            delete(branch);
         }
     }
 

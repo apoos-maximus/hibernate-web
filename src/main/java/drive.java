@@ -1,14 +1,7 @@
-import com.sun.deploy.security.SessionCertStore;
 import org.apoos.model.Account;
 import org.apoos.model.Branch;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
-
-import java.io.File;
+import org.apoos.service.AccountService;
+import org.apoos.service.BranchService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,27 +14,21 @@ public class drive {
         ac.setHolderName("Apoorv Sachan gomat");
         List<Account> accountList = new ArrayList<>();
         accountList.add(ac);
+
         Branch branch = new Branch();
         branch.setBranchCode(1122);
         branch.setBranchName("kasaul");
         branch.setAccounts(accountList);
         ac.setAccountBranch(branch);
 
+        AccountService accountService = new AccountService();
+        BranchService branchService = new BranchService();
 
+        branchService.persist(branch);
+        branch.setBranchCode(112);
+        branch.setBranchName("Apo");
+        branchService.persist(branch);
 
-        Configuration con = new Configuration().configure(new File("src/main/resources/hibernate.cfg.xml")).addAnnotatedClass(Account.class).addAnnotatedClass(Branch.class);
-
-        ServiceRegistry registry = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
-
-        SessionFactory sf = con.buildSessionFactory(registry);
-
-        Session session = sf.openSession();
-
-        Transaction tx = session.beginTransaction();
-
-        session.save(ac);
-        session.save(branch);
-
-        tx.commit();
+        System.out.println(branchService.findAll());
     }
 }
