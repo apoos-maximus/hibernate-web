@@ -48,11 +48,11 @@ public class drive {
         accountService.persist(ac);
 
 //        System.out.println(accountService.findAll());
+//
+//        List<Account> acs = (List<Account>) branchService.findById(1121).getAccounts();
+//        System.out.println(acs.get(0));
 
-        List<Account> acs = (List<Account>) branchService.findById(1121).getAccounts();
-        System.out.println(acs.get(0));
-
-//        System.out.println(accountService.findById(1111));
+        System.out.println(accountService.findAll());
 //        System.out.println(branchService.findById(1121));
 
 

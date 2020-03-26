@@ -2,6 +2,7 @@ package org.apoos.dao;
 
 import org.apoos.hibernate.HibernateUtil;
 import org.apoos.model.Account;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -70,6 +71,7 @@ public class AccountDao {
 
     public List<Account> findAll() {
         List<Account> accounts = (List<Account>) getCurrentSession().createQuery("from Account").list();
+        Hibernate.initialize(accounts);
         return accounts;
     }
 

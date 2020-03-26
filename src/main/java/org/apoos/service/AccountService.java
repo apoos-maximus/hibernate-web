@@ -12,6 +12,10 @@ public class AccountService {
         accountDao = new AccountDao();
     }
 
+    public static void setAccountDao(AccountDao accountDao) {
+        AccountService.accountDao = accountDao;
+    }
+
     public void persist(Account account) {
         accountDao.openCurrentSessionWithTransaction();
         accountDao.persist(account);
