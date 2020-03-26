@@ -50,7 +50,7 @@ public class AccountDao {
     }
 
     public void persist(Account account) {
-        getCurrentSession().save(account.getAccountBranch());
+        getCurrentSession().saveOrUpdate(account.getAccountBranch());
         getCurrentSession().save(account);
     }
 
@@ -69,7 +69,7 @@ public class AccountDao {
     }
 
     public List<Account> findAll() {
-        List<Account> accounts = (List<Account>) getCurrentSession().createQuery("from account_table").list();
+        List<Account> accounts = (List<Account>) getCurrentSession().createQuery("from Account").list();
         return accounts;
     }
 

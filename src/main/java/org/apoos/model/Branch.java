@@ -19,8 +19,8 @@ public class Branch {
     @OneToMany(mappedBy = "accountBranch")
     private List<Account> accounts = new ArrayList<>();
 
-    public void setAccounts(List<Account> accounts) {
-        this.accounts = accounts;
+    public void addAccount(Account account) {
+        this.accounts.add(account);
     }
 
     public List<Account> getAccounts() {
@@ -41,5 +41,10 @@ public class Branch {
 
     public int getBranchCode() {
         return branchCode;
+    }
+
+    @Override
+    public String toString() {
+        return "[ branchCode : " + branchCode + ", branchName : " + branchName + "]" ;
     }
 }

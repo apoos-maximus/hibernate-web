@@ -10,25 +10,57 @@ public class drive {
     public static void main(String args []){
 
         Account ac = new Account();
-        ac.setAccountNumber(122333044);
-        ac.setHolderName("Apoorv Sachan gomat");
-        List<Account> accountList = new ArrayList<>();
-        accountList.add(ac);
-
-        Branch branch = new Branch();
-        branch.setBranchCode(1122);
-        branch.setBranchName("kasaul");
-        branch.setAccounts(accountList);
-        ac.setAccountBranch(branch);
+        Branch brc = new Branch();
 
         AccountService accountService = new AccountService();
         BranchService branchService = new BranchService();
 
-        branchService.persist(branch);
-        branch.setBranchCode(112);
-        branch.setBranchName("Apo");
-        branchService.persist(branch);
+        brc.setBranchCode(1121);
+        brc.setBranchName("Kasaul");
+        ac.setAccountNumber(1111);
+        ac.setHolderName("apoorv");
+        ac.setAccountBranch(brc);
+        brc.addAccount(ac);
 
-        System.out.println(branchService.findAll());
+        branchService.persist(brc);
+        accountService.persist(ac);
+
+        ac.setAccountNumber(2222);
+        ac.setHolderName("deva");
+        ac.setAccountBranch(brc);
+        brc.addAccount(ac);
+
+        accountService.persist(ac);
+
+        brc.setBranchCode(1234);
+        brc.setBranchName("Mysore");
+
+        ac.setAccountNumber(3333);
+        ac.setHolderName("Rabindra");
+        ac.setAccountBranch(brc);
+
+        accountService.persist(ac);
+
+        ac.setAccountNumber(4444);
+        ac.setHolderName("djinesh");
+        ac.setAccountBranch(brc);
+
+        accountService.persist(ac);
+
+//        System.out.println(accountService.findAll());
+
+        List<Account> acs = (List<Account>) branchService.findById(1121).getAccounts();
+        System.out.println(acs.get(0));
+
+//        System.out.println(accountService.findById(1111));
+//        System.out.println(branchService.findById(1121));
+
+
+
+
+
+
+
+
     }
 }

@@ -3,6 +3,7 @@ package org.apoos.dao;
 import org.apoos.hibernate.HibernateUtil;
 import org.apoos.model.Account;
 import org.apoos.model.Branch;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -49,7 +50,7 @@ public class BranchDao {
     }
 
     public void persist(Branch branch) {
-        getCurrentSession().save(branch);
+        getCurrentSession().saveOrUpdate(branch);
     }
 
     public void update(Branch branch) {
@@ -58,6 +59,7 @@ public class BranchDao {
 
     public Branch findById(Integer id) {
         Branch branch = (Branch) getCurrentSession().get(Branch.class, id);
+        Hibernate.initialize(branch.getAccounts());
         return branch;
     }
 
