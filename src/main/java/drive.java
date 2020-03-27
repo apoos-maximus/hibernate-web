@@ -53,7 +53,7 @@ public class drive {
 //        System.out.println(acs.get(0));
 
         System.out.println(accountService.findAll());
-//        System.out.println(branchService.findById(1121));
+        System.out.println(branchService.findById(1121).getAccounts());
 
 
 

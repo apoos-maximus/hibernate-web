@@ -12,6 +12,10 @@ public class BranchService {
         branchDao = new BranchDao();
     }
 
+    public static void setBranchDao(BranchDao branchDao) {
+        BranchService.branchDao = branchDao;
+    }
+
     public void persist(Branch branch) {
         branchDao.openCurrentSessionWithTransaction();
         branchDao.persist(branch);

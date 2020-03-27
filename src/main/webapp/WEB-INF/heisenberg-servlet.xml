@@ -20,11 +20,19 @@
         <property name="accountDao" ref="AccountDao"></property>
     </bean>
 
+    <bean id="BranchDao" class="org.apoos.dao.BranchDao"></bean>
+    <bean id="BranchService" class="org.apoos.service.BranchService">
+        <property name="branchDao" ref="BranchDao"></property>
+    </bean>
+
     <bean id="gson" class="com.google.gson.Gson"></bean>
 
     <bean name="AccountRESTController" class="org.apoos.controller.AccountRESTController">
         <property name="accountService" ref="AccountService"></property>
         <property name="gson" ref="gson"></property>
+    </bean>
+    <bean name="BranchRESTController" class="org.apoos.controller.BranchRESTController">
+        <property name="branchService" ref="BranchService"></property>
     </bean>
 
 

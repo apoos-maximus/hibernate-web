@@ -1,6 +1,12 @@
 package org.apoos.model;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import netscape.javascript.JSObject;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,7 +20,7 @@ public class Account {
     @Column(name = "acHolderName")
     private String holderName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Branch accountBranch;
 
 
@@ -44,6 +50,11 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account [ accountNumber : " + accountNumber + " , holderName : " + holderName + "]";
+        JsonObject jso = new JsonObject();
+        jso.addProperty("accountNumber",Integer.toString(getAccountNumber()));
+        jso.addProperty("holderName",getHolderName());
+        jso.addProperty("accountBranch",getAccountBranch().toString());
+
+        return  jso.toString().replaceAll("\\\\","").replaceAll("\"","{");
     }
 }

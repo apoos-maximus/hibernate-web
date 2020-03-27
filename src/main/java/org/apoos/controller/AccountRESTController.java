@@ -1,6 +1,8 @@
 package org.apoos.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.apoos.dao.AccountDao;
 import org.apoos.model.Account;
 import org.apoos.service.AccountService;
@@ -37,8 +39,12 @@ public class AccountRESTController {
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         List<Account> all;
         all = accountService.findAll();
+        JsonArray ar = new JsonArray();
+        for (int i = 0; i < all.size(); i++){
+            ar.add(all.get(i).toString());
+        }
         System.out.println(all);
-        String resp = gson.toJson(all);
+        String resp = ar.toString();
         return new ResponseEntity<String>(resp,responseHeaders, HttpStatus.CREATED);
     }
 
@@ -47,14 +53,15 @@ public class AccountRESTController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         if (!id.matches("[0-9].*")) return new ResponseEntity<String>("bad request",responseHeaders,HttpStatus.BAD_REQUEST);
-        List<Account> accounts = new LinkedList<>();
-        accounts.add( accountService.findById(Integer.parseInt(id)) );
-        String resp = gson.toJson(accounts);
+        Account account ;
+
+        account = accountService.findById(Integer.parseInt(id)) ;
+        String resp = account.toString();
         return new ResponseEntity<String>(resp,responseHeaders, HttpStatus.CREATED);
     }
 
     @PostMapping("/account")
-    public ResponseEntity<String> createEmployee(@RequestBody String reqBody){
+    public ResponseEntity<String> createAccount(@RequestBody String reqBody){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         Account account;
@@ -73,7 +80,7 @@ public class AccountRESTController {
     }
 
     @PutMapping("/account")
-    public ResponseEntity<String> editEmployee(@RequestBody String reqBody){
+    public ResponseEntity<String> editAccount(@RequestBody String reqBody){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         Account account;
@@ -91,7 +98,7 @@ public class AccountRESTController {
     }
 
     @DeleteMapping("/account/{id}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable String id) {
+    public ResponseEntity<String> deleteAccount(@PathVariable String id) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         String resp = new String();

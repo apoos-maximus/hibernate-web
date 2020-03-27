@@ -69,6 +69,7 @@ public class BranchDao {
 
     public List<Branch> findAll() {
         List<Branch> branches = (List<Branch>) getCurrentSession().createQuery("from Branch").list();
+        Hibernate.initialize(branches);
         return branches;
     }
 
