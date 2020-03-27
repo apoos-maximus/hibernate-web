@@ -55,6 +55,18 @@ public class AccountService {
         accountDao.closeCurrentSessionWithTransaction();
     }
 
+    public  void credit(int id, int amount){
+        Account ac = findById(id);
+        ac.credit(amount);
+        update(ac);
+    }
+
+    public  void debit(int id, int amount){
+        Account ac = findById(id);
+        ac.debit(amount);
+        update(ac);
+    }
+
     public static AccountDao getAccountDao() {
         return accountDao;
     }

@@ -74,6 +74,39 @@ public class AccountRESTController {
         return new ResponseEntity<String>(resp,responseHeaders,HttpStatus.CREATED);
     }
 
+    @PutMapping("/account/credit/{id}/{amount}")
+    public ResponseEntity<String> editAccount(@PathVariable Integer amount, @PathVariable Integer id){
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        Account account;
+        String resp = new String();
+        try {
+            accountService.credit(id,amount);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        resp = "{\"status\":successfull }";
+
+        return new ResponseEntity<String>(resp,responseHeaders,HttpStatus.CREATED);
+    }
+
+    @PutMapping("/account/debit/{id}/{amount}")
+    public ResponseEntity<String> debit(@PathVariable Integer amount, @PathVariable Integer id){
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        String resp = new String();
+        try {
+            accountService.debit(id,amount);
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+        resp = "{\"status\":successfull }";
+
+        return new ResponseEntity<String>(resp,responseHeaders,HttpStatus.CREATED);
+    }
+
     @PutMapping("/account")
     public ResponseEntity<String> editAccount(@RequestBody String reqBody){
         HttpHeaders responseHeaders = new HttpHeaders();

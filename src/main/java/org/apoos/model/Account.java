@@ -21,6 +21,9 @@ public class Account {
     @Column(name = "acHolderName")
     private String holderName;
 
+    @Column(name = "acBalance")
+    private Integer accountBalance;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Branch accountBranch;
 
@@ -45,8 +48,23 @@ public class Account {
         this.accountBranch = accountBranch;
     }
 
+    public void setAccountBalance(Integer accountBalance) {
+        this.accountBalance = accountBalance;
+    }
+
+    public Integer getAccountBalance() {
+        return accountBalance;
+    }
+
     public Branch getAccountBranch() {
         return accountBranch;
+    }
+
+    public void credit(int amount) {
+        accountBalance += amount;
+    }
+    public void debit(int amount) {
+        accountBalance -= amount;
     }
 
     @Override
