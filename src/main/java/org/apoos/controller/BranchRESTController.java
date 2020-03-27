@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,8 +35,7 @@ public class BranchRESTController {
     public ResponseEntity<String> allb(){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-        List<Branch> all;
-        all = branchService.findAll();
+        List<Branch> all = branchService.findAll();
         System.out.println(all);
         String resp = gson.toJson(all);
         return new ResponseEntity<String>(resp,responseHeaders, HttpStatus.CREATED);
@@ -48,7 +48,7 @@ public class BranchRESTController {
         if (!id.matches("[0-9].*")) return new ResponseEntity<String>("bad request",responseHeaders,HttpStatus.BAD_REQUEST);
         Branch branch;
         branch = branchService.findById(Integer.parseInt(id)) ;
-        System.out.println(branch.getAccounts());
+        System.out.println(branch);
         String resp = gson.toJson(branch);
         return new ResponseEntity<String>(resp,responseHeaders, HttpStatus.CREATED);
     }

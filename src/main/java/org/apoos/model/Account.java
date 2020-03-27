@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import netscape.javascript.JSObject;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 
@@ -50,11 +51,7 @@ public class Account {
 
     @Override
     public String toString() {
-        JsonObject jso = new JsonObject();
-        jso.addProperty("accountNumber",Integer.toString(getAccountNumber()));
-        jso.addProperty("holderName",getHolderName());
-        jso.addProperty("accountBranch",getAccountBranch().toString());
-
-        return  jso.toString().replaceAll("\\\\","").replaceAll("\"","{");
+        Gson gson = new Gson();
+        return  gson.toJson(this);
     }
 }

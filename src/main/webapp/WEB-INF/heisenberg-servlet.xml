@@ -33,6 +33,7 @@
     </bean>
     <bean name="BranchRESTController" class="org.apoos.controller.BranchRESTController">
         <property name="branchService" ref="BranchService"></property>
+        <property name="gson" ref="gson"></property>
     </bean>
 
 

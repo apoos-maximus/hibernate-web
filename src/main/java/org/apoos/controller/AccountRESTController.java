@@ -39,12 +39,8 @@ public class AccountRESTController {
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         List<Account> all;
         all = accountService.findAll();
-        JsonArray ar = new JsonArray();
-        for (int i = 0; i < all.size(); i++){
-            ar.add(all.get(i).toString());
-        }
         System.out.println(all);
-        String resp = ar.toString();
+        String resp = gson.toJson(all);
         return new ResponseEntity<String>(resp,responseHeaders, HttpStatus.CREATED);
     }
 
@@ -54,9 +50,8 @@ public class AccountRESTController {
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         if (!id.matches("[0-9].*")) return new ResponseEntity<String>("bad request",responseHeaders,HttpStatus.BAD_REQUEST);
         Account account ;
-
         account = accountService.findById(Integer.parseInt(id)) ;
-        String resp = account.toString();
+        String resp = gson.toJson(account);
         return new ResponseEntity<String>(resp,responseHeaders, HttpStatus.CREATED);
     }
 

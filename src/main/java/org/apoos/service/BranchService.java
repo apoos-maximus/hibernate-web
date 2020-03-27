@@ -2,6 +2,7 @@ package org.apoos.service;
 
 import org.apoos.dao.BranchDao;
 import org.apoos.model.Branch;
+import org.hibernate.Hibernate;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class BranchService {
     public Branch findById(int id){
         branchDao.openCurrentSession();
         Branch branch = (Branch) branchDao.findById(id);
+        Hibernate.initialize(branch);
         branchDao.closeCurrentSession();
         return  branch;
     }

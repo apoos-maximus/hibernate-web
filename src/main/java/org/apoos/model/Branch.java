@@ -1,7 +1,10 @@
 package org.apoos.model;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,7 +23,7 @@ public class Branch {
     private String branchName;
 
     @OneToMany(mappedBy = "accountBranch", fetch = FetchType.EAGER)
-    private List<Account> accounts = new ArrayList<>();
+    private transient List<Account> accounts = new ArrayList<>();
 
     public void addAccount(Account account) {
         this.accounts.add(account);
@@ -50,16 +53,7 @@ public class Branch {
 
     @Override
     public String toString() {
-        JsonArray jso = new JsonArray();
-        JsonObject brc = new JsonObject();
-        String accList;
-        for(int i = 0; i < accounts.size(); i++){
-            jso.add(accounts.get(i).getAccountNumber());
-        }
-        brc.addProperty("branchCode",getBranchCode());
-        brc.addProperty("branchName",getBranchName());
-        brc.addProperty("accounts",jso.toString());
-
-        return brc.toString().replaceAll("\\\\","").replaceAll("\\\"","");
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }
