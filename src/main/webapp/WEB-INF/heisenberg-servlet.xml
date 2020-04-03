@@ -36,5 +36,7 @@
         <property name="gson" ref="gson"></property>
     </bean>
 
+    <bean name="homeController" class="org.apoos.controller.HomeController"></bean>
+
 
 </beans>

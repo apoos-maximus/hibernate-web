@@ -1,19 +1,14 @@
 package org.apoos.controller;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import org.apoos.dao.AccountDao;
 import org.apoos.model.Account;
 import org.apoos.service.AccountService;
-import org.hibernate.Hibernate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.LinkedList;
+import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @RestController
@@ -33,30 +28,35 @@ public class AccountRESTController {
         this.accountService = accountService;
     }
 
-    @GetMapping("/account")
-    public ResponseEntity<String> all(){
+    @GetMapping("/accountAll")
+    public ModelAndView all(){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         List<Account> all;
         all = accountService.findAll();
         System.out.println(all);
         String resp = gson.toJson(all);
-        return new ResponseEntity<String>(resp,responseHeaders, HttpStatus.CREATED);
+        ModelAndView model = new ModelAndView("accounts");
+        model.addObject("resp",resp);
+        return model;
     }
 
-    @GetMapping("/account/{id}")
-    public ResponseEntity<String> getById(@PathVariable String id){
+    @GetMapping("/accountById")
+    public ModelAndView getById(@RequestParam String id){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-        if (!id.matches("[0-9].*")) return new ResponseEntity<String>("bad request",responseHeaders,HttpStatus.BAD_REQUEST);
+        if (!id.matches("[0-9].*")) return new ModelAndView("accounts").addObject("resp","BAD REQUEST");
         Account account ;
         account = accountService.findById(Integer.parseInt(id)) ;
         String resp = gson.toJson(account);
-        return new ResponseEntity<String>(resp,responseHeaders, HttpStatus.CREATED);
+        ModelAndView model = new ModelAndView("accounts");
+        model.addObject("resp",resp);
+        return model;
     }
 
     @PostMapping("/account")
-    public ResponseEntity<String> createAccount(@RequestBody String reqBody){
+    public ModelAndView createAccount(@RequestParam("objDesc") String reqBody){
+        System.out.println(reqBody);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         Account account;
@@ -68,14 +68,15 @@ public class AccountRESTController {
         catch (Exception ex) {
             ex.printStackTrace();
             resp = "{status: account with same id already exists}";
+            return new ModelAndView("accounts").addObject("resp",resp);
         }
             resp = "{success}";
 
-        return new ResponseEntity<String>(resp,responseHeaders,HttpStatus.CREATED);
+        return new ModelAndView("accounts").addObject("resp",resp);
     }
 
-    @PutMapping("/account/credit/{id}/{amount}")
-    public ResponseEntity<String> editAccount(@PathVariable Integer amount, @PathVariable Integer id){
+    @PostMapping("/account/credit")
+    public ModelAndView creditAccount(@RequestParam("amount") Integer amount, @RequestParam("id") Integer id){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         Account account;
@@ -88,11 +89,11 @@ public class AccountRESTController {
         }
         resp = "{\"status\":successfull }";
 
-        return new ResponseEntity<String>(resp,responseHeaders,HttpStatus.CREATED);
+        return new ModelAndView("accounts").addObject("resp",resp);
     }
 
-    @PutMapping("/account/debit/{id}/{amount}")
-    public ResponseEntity<String> debit(@PathVariable Integer amount, @PathVariable Integer id){
+    @PostMapping("/account/debit")
+    public ModelAndView debit(@RequestParam("amount") Integer amount, @RequestParam("id") Integer id){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         String resp = new String();
@@ -104,11 +105,11 @@ public class AccountRESTController {
         }
         resp = "{\"status\":successfull }";
 
-        return new ResponseEntity<String>(resp,responseHeaders,HttpStatus.CREATED);
+        return new ModelAndView("accounts").addObject("resp",resp);
     }
 
-    @PutMapping("/account")
-    public ResponseEntity<String> editAccount(@RequestBody String reqBody){
+    @PostMapping("/accountEdit")
+    public ModelAndView editAccount(@RequestParam("objDesc") String reqBody){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         Account account;
@@ -119,19 +120,19 @@ public class AccountRESTController {
         }
         catch (Exception ex){
             ex.printStackTrace();
-        }
+    }
             resp = "{\"status\":successfull }";
 
-        return new ResponseEntity<String>(resp,responseHeaders,HttpStatus.CREATED);
+        return new ModelAndView("accounts").addObject("resp",resp);
     }
 
-    @DeleteMapping("/account/{id}")
-    public ResponseEntity<String> deleteAccount(@PathVariable String id) {
+    @GetMapping("/account/delete")
+    public ModelAndView deleteAccount(@RequestParam("id") String id) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         String resp = new String();
         if (!id.matches("[0-9].*"))
-            return new ResponseEntity<String>("bad request", responseHeaders, HttpStatus.BAD_REQUEST);
+            return new ModelAndView("accounts").addObject("resp","bad request");
         try{
             accountService.delete(Integer.parseInt(id));
         }
@@ -141,7 +142,6 @@ public class AccountRESTController {
         }
         resp = "{\"status\": succesfully deleted !}";
 
-        return new ResponseEntity<String>(resp, responseHeaders, HttpStatus.CREATED);
+        return new ModelAndView("accounts").addObject("resp",resp);
     }
-
 }

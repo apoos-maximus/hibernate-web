@@ -2,6 +2,7 @@
 
   echo "build done";
 
+rm -rf $TOMCAT_HOME/webapps/.*
 cp ./target/hibernate-web.war $TOMCAT_HOME/webapps/hibernate-web.war
 
   echo "war shipped !"
