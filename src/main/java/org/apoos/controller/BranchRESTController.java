@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -31,30 +32,30 @@ public class BranchRESTController {
         this.branchService = branchService;
     }
 
-    @GetMapping("/branch")
-    public ResponseEntity<String> allb(){
+    @GetMapping("/branchAll")
+    public ModelAndView allb(){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         List<Branch> all = branchService.findAll();
         System.out.println(all);
         String resp = gson.toJson(all);
-        return new ResponseEntity<String>(resp,responseHeaders, HttpStatus.CREATED);
+        return new ModelAndView("branches").addObject("resp",resp);
     }
 
-    @GetMapping("/branch/{id}")
-    public ResponseEntity<String> getByIdb(@PathVariable String id){
+    @GetMapping("/branchById")
+    public ModelAndView getByIdb(@RequestParam("id") String id){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-        if (!id.matches("[0-9].*")) return new ResponseEntity<String>("bad request",responseHeaders,HttpStatus.BAD_REQUEST);
+        if (!id.matches("[0-9].*")) return new ModelAndView("branches").addObject("resp","bad request");
         Branch branch;
         branch = branchService.findById(Integer.parseInt(id)) ;
         System.out.println(branch);
         String resp = gson.toJson(branch);
-        return new ResponseEntity<String>(resp,responseHeaders, HttpStatus.CREATED);
+        return new ModelAndView("branches").addObject("resp",resp);
     }
 
     @PostMapping("/branch")
-    public ResponseEntity<String> createBranchb(@RequestBody String reqBody){
+    public ModelAndView createBranchb(@RequestParam("objDesc") String reqBody){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         Branch branch;
@@ -66,14 +67,15 @@ public class BranchRESTController {
         catch (Exception ex) {
             ex.printStackTrace();
             resp = "{status: account with same id already exists}";
+            return new ModelAndView("branches").addObject("resp",resp);
         }
         resp = "{success}";
 
-        return new ResponseEntity<String>(resp,responseHeaders,HttpStatus.CREATED);
+        return new ModelAndView("branches").addObject("resp",resp);
     }
 
-    @PutMapping("/branch")
-    public ResponseEntity<String> editBranchb(@RequestBody String reqBody){
+    @PostMapping("/branchEdit")
+    public ModelAndView editBranchb(@RequestParam("objDesc") String reqBody){
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         Branch branch;
@@ -87,25 +89,26 @@ public class BranchRESTController {
         }
         resp = "{\"status\":successfull }";
 
-        return new ResponseEntity<String>(resp,responseHeaders,HttpStatus.CREATED);
+        return new ModelAndView("branches").addObject("resp",resp);
     }
 
-    @DeleteMapping("/branch/{id}")
-    public ResponseEntity<String> deleteBranchb(@PathVariable String id) {
+    @GetMapping("/branch/delete")
+    public ModelAndView deleteBranchb(@RequestParam("id") String id) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
         String resp = new String();
         if (!id.matches("[0-9].*"))
-            return new ResponseEntity<String>("bad request", responseHeaders, HttpStatus.BAD_REQUEST);
+            return new ModelAndView("branches").addObject("resp","bad request");
         try{
             branchService.delete(Integer.parseInt(id));
         }
         catch (Exception ex) {
             ex.printStackTrace();
             resp = "{\"status\": account with id="+id+" doesn't exist}";
+            return new ModelAndView("branches").addObject("resp",resp);
         }
         resp = "{\"status\": succesfully deleted !}";
 
-        return new ResponseEntity<String>(resp, responseHeaders, HttpStatus.CREATED);
+        return new ModelAndView("branches").addObject("resp",resp);
     }
 }
