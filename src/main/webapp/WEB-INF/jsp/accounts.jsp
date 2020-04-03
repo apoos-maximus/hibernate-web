@@ -46,6 +46,9 @@
     </head>
     <body>
         <br/>
+        <div>
+            <a href="logout" > Logout</a>
+        </div>
         <div id="outer">
             <div id="controls">
                 <div id="forms-and-buttons">
