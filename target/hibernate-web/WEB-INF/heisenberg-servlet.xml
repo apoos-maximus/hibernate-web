@@ -1,0 +1,49 @@
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation = "
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <mvc:annotation-driven />
+<!--    <context:component-scan base-package="org.apoos" />-->
+
+    <bean class = "org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name = "prefix" value = "/WEB-INF/jsp/"/>
+        <property name = "suffix" value = ".jsp"/>
+    </bean>
+
+<!--    <bean class = "org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>-->
+
+    <bean id="AccountDao" class="org.apoos.dao.AccountDao"></bean>
+    <bean id="AccountService" class = "org.apoos.service.AccountService">
+        <property name="accountDao" ref="AccountDao"></property>
+    </bean>
+
+    <bean id="BranchDao" class="org.apoos.dao.BranchDao"></bean>
+    <bean id="BranchService" class="org.apoos.service.BranchService">
+        <property name="branchDao" ref="BranchDao"></property>
+    </bean>
+
+    <bean id="gson" class="com.google.gson.Gson"></bean>
+
+    <bean name="AccountRESTController" class="org.apoos.controller.AccountRESTController">
+        <property name="accountService" ref="AccountService"></property>
+        <property name="gson" ref="gson"></property>
+    </bean>
+    <bean name="BranchRESTController" class="org.apoos.controller.BranchRESTController">
+        <property name="branchService" ref="BranchService"></property>
+        <property name="gson" ref="gson"></property>
+    </bean>
+
+    <bean name="homeController" class="org.apoos.controller.HomeController"></bean>
+
+
+</beans>
