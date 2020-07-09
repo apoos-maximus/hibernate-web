@@ -14,7 +14,7 @@ public class HibernateUtil {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            Configuration config = new Configuration().configure(new File("src/main/resources/hibernate.cfg.xml")).addAnnotatedClass(Account.class).addAnnotatedClass(Branch.class);
+            Configuration config = new Configuration().configure().addAnnotatedClass(Account.class).addAnnotatedClass(Branch.class);
             ServiceRegistry registry = new ServiceRegistryBuilder().applySettings(config.getProperties()).buildServiceRegistry();
             SessionFactory sf = config.buildSessionFactory(registry);
             return sf;
