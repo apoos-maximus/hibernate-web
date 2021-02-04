@@ -1,0 +1,22 @@
+version = 1
+
+exclude_patterns = [
+    "*.jar,",
+    "    *.war,",
+    "    *.nar,",
+    "    *.ear,",
+    "    *.zip ,",
+    "    *.class,",
+    "    *.tar.gz,",
+    "    *.ctxt,",
+    "    *.log,",
+    "    *.rar,",
+    "    hs_err_pid"
+]
+
+[[analyzers]]
+name = "java"
+enabled = true
+
+  [analyzers.meta]
+  runtime_version = "8"
